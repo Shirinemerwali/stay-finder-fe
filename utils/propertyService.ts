@@ -1,7 +1,11 @@
+
 import type { Property, PropertyKind } from "@/types/property";
 
 export type PropertiesFilter = {
   location?: string;
+  maxPrice?: number;
+  maxGuests?: number;
+  sort?: "asc" | "desc";
 };
 
 export type CreatePropertyState = {
@@ -17,16 +21,33 @@ function isPropertyKind(value: string): value is PropertyKind {
 
 export async function getProperties({
   location,
+  maxPrice,
+  maxGuests,
+  sort,
 }: PropertiesFilter = {}): Promise<Property[]> {
   const url = new URL(`${process.env.NEXT_PUBLIC_BACKEND_URL}/properties/`);
+
   if (location) {
     url.searchParams.append("location", location);
   }
+
+  if (maxPrice !== undefined) {
+    url.searchParams.append("maxprice", String(maxPrice));
+  }
+
+  if (maxGuests !== undefined) {
+    url.searchParams.append("maxguests", String(maxGuests));
+  }
+
+  if (sort) {
+    url.searchParams.append("sort", sort);
+  }
+
   try {
     const response = await fetch(url);
     const properties: Property[] = await response.json();
     return properties;
-  } catch (e) {
+  } catch {
     return [];
   }
 }
@@ -60,6 +81,7 @@ export async function createProperty(
   if (!isPropertyKind(kind)) {
     return { error: "Choose apartment or villa." };
   }
+
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/properties/`,
     {

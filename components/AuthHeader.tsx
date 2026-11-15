@@ -1,17 +1,34 @@
+
 "use client";
 
+import Link from "next/link";
 import { useAuth } from "@/contexts/auth";
 import T from "./typography";
 
-export default function AuthHeader(){
-    const auth = useAuth()
+export default function AuthHeader() {
+  const auth = useAuth();
 
-    console.log("auth", auth)
+  const handleLogout = async () => {
+    await auth.logout();
+  };
 
-    return (
+  return (
+    <div>
+      {!auth.user && (
         <div>
-            {!auth.user && <T.Header>Not logged in</T.Header>}
-            {auth.user && <T.Header>Logged in {auth.user.email}</T.Header>}
+          <T.Header>Not logged in</T.Header>
+          <Link href="/auth/login">Log in</Link>
         </div>
-    )
+      )}
+
+      {auth.user && (
+        <div>
+          <T.Header>Logged in {auth.user.email}</T.Header>
+          <button onClick={handleLogout}>
+            Log out
+          </button>
+        </div>
+      )}
+    </div>
+  );
 }

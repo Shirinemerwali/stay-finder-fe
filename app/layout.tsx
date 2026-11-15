@@ -1,3 +1,4 @@
+
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Link from "next/link";
@@ -16,8 +17,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Stay Finder",
-  description: "Find a place to stay",
+  title: "StayFinder | Find your next escape",
+  description: "Discover beautiful places to stay across Sweden.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -26,26 +27,43 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col font-sans">
+      <body className="flex min-h-full flex-col bg-[#faf9f6] font-sans text-stone-900">
         <Providers>
-          <header className="border-b border-zinc-200 bg-white dark:border-zinc-800 dark:bg-black">
-            <div className="mx-auto flex w-full max-w-3xl items-center justify-between px-6 py-4">
-              <Link href="/" className="text-xl font-bold">
-                Stay Finder
-              </Link>
+          <header className="sticky top-0 z-50 border-b border-stone-200/80 bg-[#faf9f6]/95 backdrop-blur-md">
+            <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-4 px-6 py-5">
               <Link
-                href="/host/properties/new"
-                className="text-sm font-medium text-zinc-700 hover:text-zinc-950 dark:text-zinc-300 dark:hover:text-white"
+                href="/"
+                className="text-2xl font-bold tracking-tight text-stone-900"
               >
-                List a stay
+                Stay<span className="text-emerald-800">Finder.</span>
               </Link>
-              <AuthHeader/>
+
+              <nav className="flex items-center gap-5">
+                <Link
+                  href="/host/properties/new"
+                  className="rounded-full bg-emerald-900 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-emerald-800"
+                >
+                  List a stay
+                </Link>
+
+                <AuthHeader />
+              </nav>
             </div>
           </header>
+
           {children}
-          <footer className="border-t border-zinc-200 bg-white dark:border-zinc-800 dark:bg-black">
-            <div className="mx-auto w-full max-w-3xl px-6 py-6 text-sm text-zinc-600 dark:text-zinc-400">
-              © {new Date().getFullYear()} Stay Finder
+
+          <footer className="mt-auto border-t border-stone-200 bg-[#f3f1eb]">
+            <div className="mx-auto flex w-full max-w-7xl flex-col gap-2 px-6 py-8 sm:flex-row sm:items-center sm:justify-between">
+              <span className="text-lg font-bold">
+                Stay<span className="text-emerald-800">Finder.</span>
+              </span>
+              <p className="text-sm text-stone-500">
+                Discover your next escape across Sweden.
+              </p>
+              <p className="text-xs text-stone-500">
+                © {new Date().getFullYear()} StayFinder
+              </p>
             </div>
           </footer>
         </Providers>

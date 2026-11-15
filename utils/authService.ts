@@ -1,3 +1,19 @@
+
+export async function register(email: string, password: string) {
+  const url = new URL(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/register/`);
+
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+    body: JSON.stringify({ email, password }),
+  });
+
+  return response.ok;
+}
+
 export async function login(email: string, password: string) {
   const url = new URL(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/login/`);
 
@@ -7,18 +23,11 @@ export async function login(email: string, password: string) {
       "Content-Type": "application/json",
     },
     credentials: "include",
-    body: JSON.stringify({
-      email,
-      password,
-    }),
+    body: JSON.stringify({ email, password }),
   });
 
-  if (response.ok) {
-    return true;
-  }
-  return false;
+  return response.ok;
 }
-
 
 export async function getMe(): Promise<AuthUser | null> {
   const url = new URL(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/me/`);
@@ -35,5 +44,17 @@ export async function getMe(): Promise<AuthUser | null> {
     const data = await response.json();
     return data?.user as AuthUser | null;
   }
+
   return null;
+}
+
+export async function logout(): Promise<boolean> {
+  const url = new URL(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/logout/`);
+
+  const response = await fetch(url, {
+    method: "POST",
+    credentials: "include",
+  });
+
+  return response.ok;
 }
